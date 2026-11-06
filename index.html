@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta property="og:title" content="Swarm Chain">
+<meta property="og:description" content="Contracts written in words. Validators with judgment. No token.">
+<meta property="og:image" content="https://swarmchain.verafy.ai/banner.png">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
 </head>
 <body>
 <title>Swarm Chain</title>
@@ -49,7 +53,8 @@ p{margin:0}
 .coinfree h2{font-size:clamp(24px,2.6vw,32px);color:var(--ink)}
 .coinfree p{max-width:46em;color:var(--ink);overflow-wrap:break-word}
 .top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
-.brand{font-family:var(--display);font-weight:800;font-size:20px;font-stretch:110%;color:var(--ink);text-decoration:none}
+.brand{font-family:var(--display);font-weight:800;font-size:20px;font-stretch:110%;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:10px}
+.brand .mark{color:var(--ink);flex:none}
 .status{font-family:var(--mono);font-size:12.5px;color:var(--hold);border:1px solid currentColor;padding:4px 10px;border-radius:2px}
 .tabs{display:flex;flex-wrap:wrap;gap:4px;margin-right:auto;margin-left:12px}
 .tabs a{font-family:var(--display);font-weight:600;font-size:15px;color:var(--mute);text-decoration:none;padding:6px 10px;border-radius:2px;border:1px solid transparent}
@@ -185,11 +190,14 @@ td.k{color:var(--mute)}
   </div>
 </section>
 <header class="wrap top">
-  <a class="brand" href="#">Swarm Chain</a>
+  <a class="brand" href="#"><svg class="mark" viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><line x1="16" y1="16" x2="16.00" y2="5.00" stroke="currentColor" stroke-width="1.2" opacity=".45"/><line x1="16" y1="16" x2="26.46" y2="12.60" stroke="currentColor" stroke-width="1.2" opacity=".45"/><line x1="16" y1="16" x2="22.47" y2="24.90" stroke="currentColor" stroke-width="1.2" opacity=".45"/><line x1="16" y1="16" x2="9.53" y2="24.90" stroke="currentColor" stroke-width="1.2" opacity=".45"/><line x1="16" y1="16" x2="5.54" y2="12.60" stroke="currentColor" stroke-width="1.2" opacity=".45"/><circle cx="16" cy="16" r="5.2" fill="var(--accent)"/><rect x="12.80" y="1.80" width="6.4" height="6.4" rx="1" fill="var(--sheet)" stroke="currentColor" stroke-width="1.6"/><rect x="23.26" y="9.40" width="6.4" height="6.4" rx="1" fill="var(--sheet)" stroke="currentColor" stroke-width="1.6"/><rect x="19.27" y="21.70" width="6.4" height="6.4" rx="1" fill="var(--sheet)" stroke="currentColor" stroke-width="1.6"/><rect x="6.33" y="21.70" width="6.4" height="6.4" rx="1" fill="var(--sheet)" stroke="currentColor" stroke-width="1.6"/><rect x="2.34" y="9.40" width="6.4" height="6.4" rx="1" fill="var(--sheet)" stroke="currentColor" stroke-width="1.6"/></svg>Swarm Chain</a>
   <nav class="tabs" aria-label="Swarm Chain sections">
     <a href="#" aria-current="page">Concept</a>
+    <a href="run.html">Run a harness</a>
+    <a href="testnet.html">Testnet</a>
+    <a href="coin-agnostic.html">Coin Agnostic</a>
     <a href="https://asc.verafy.ai">Actually Smart Contracts</a>
-    <a href="https://github.com/Verafyai/swarmHarness">Swarm Harness</a>
+    <a href="https://github.com/Verafyai/verafyHarness">Verafy Harness</a>
     <a href="#roadmap">Roadmap</a>
   </nav>
   <span class="status">Concept. Not a running network.</span>
@@ -301,8 +309,8 @@ td.k{color:var(--mute)}
   <div class="body">
     <h2 id="s2">A validator is an AI model in a harness</h2>
     <p class="lead">On today's chains a validator is a machine that re-runs code and votes on blocks. On Swarm Chain a validator is an AI model wrapped in a harness. The model brings judgment. The harness does everything else a validator does: it takes requests in, loads and checks their context, gives the model safe tools, signs and posts votes, holds the bond, and runs the smart contracts that act on rulings.</p>
-    <div class="figure" role="img" aria-label="Block diagram of a harnessed validator. On the left, inputs: requests from Swarm Chain or any chain, and pinned context from the availability layer. Inside the harness: an intake queue, a context loader that verifies hashes, a tools sandbox, the pinned AI model at the center, guardrails, a signer for commit and reveal, a contract runtime for escrow, payouts and triggers, a bond wallet, a track record, and attestation of the model and hardware. On the right, outputs: votes and rulings posted to Swarm Chain, and contract calls to other chains.">
-      <svg viewBox="0 0 1100 560" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13">
+    <div class="figure" role="img" aria-label="Block diagram of a harnessed validator. On the left, inputs: requests from Swarm Chain or any chain, and pinned context from the availability layer. Inside the harness: an intake queue, a context loader that verifies hashes, a tools sandbox, the pinned AI model at the center, guardrails, a signer for commit and reveal, a contract runtime for escrow, payouts and triggers, a bond wallet, a track record, attestation of the model and hardware, and a routing agent: an API router with a payment wallet, an inference router that picks AI by provability from L0 to L2, and hosting and bills. Payments in any asset come in on the left. On the right, outputs: votes and rulings posted to Swarm Chain, contract calls to other chains, AI APIs and provers, and cloud hosts paid automatically.">
+      <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13">
         <!-- external inputs -->
         <text x="20" y="34" fill="var(--mute)" font-size="12" letter-spacing="1.2">IN</text>
         <rect x="20" y="120" width="170" height="70" rx="2" fill="var(--paper)" stroke="var(--rule)"/>
@@ -315,7 +323,7 @@ td.k{color:var(--mute)}
         <text x="34" y="408" fill="var(--ink)" font-weight="600">Live sources</text>
         <text x="34" y="430" fill="var(--mute)" font-size="12">snapshotted by hash</text>
         <!-- harness frame -->
-        <rect x="230" y="40" width="640" height="500" rx="3" fill="var(--sheet)" stroke="var(--accent)" stroke-width="2"/>
+        <rect x="230" y="40" width="640" height="660" rx="3" fill="var(--sheet)" stroke="var(--accent)" stroke-width="2"/>
         <text x="250" y="68" fill="var(--accent)" font-weight="600" font-size="14" letter-spacing="1">HARNESS</text>
         <text x="350" y="68" fill="var(--mute)" font-size="12">run by anyone, on their own hardware or API keys</text>
         <!-- left modules -->
@@ -348,12 +356,29 @@ td.k{color:var(--mute)}
         <text x="469" y="486" fill="var(--ink)" font-weight="600">Track record</text><text x="469" y="505" fill="var(--mute)" font-size="12">audits, forecast scores</text>
         <rect x="660" y="462" width="190" height="56" rx="2" fill="var(--paper)" stroke="var(--rule)"/>
         <text x="674" y="486" fill="var(--ink)" font-weight="600">Attestation</text><text x="674" y="505" fill="var(--mute)" font-size="12">model and hardware</text>
+        <!-- routing agent -->
+        <rect x="250" y="540" width="600" height="140" rx="2" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="264" y="564" fill="var(--ink)" font-weight="600" font-size="14">Routing agent</text>
+        <text x="390" y="564" fill="var(--mute)" font-size="12">API router and payment wallet: serves every model call</text>
+        <rect x="264" y="580" width="180" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
+        <text x="276" y="602" fill="var(--ink)" font-weight="600">Payment wallet</text>
+        <text x="276" y="622" fill="var(--mute)" font-size="12">any asset in, converts</text>
+        <text x="276" y="640" fill="var(--mute)" font-size="12">bond reserve, caps</text>
+        <rect x="460" y="580" width="180" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
+        <text x="472" y="602" fill="var(--ink)" font-weight="600">Inference router</text>
+        <text x="472" y="622" fill="var(--mute)" font-size="12">AI APIs and own GPUs</text>
+        <text x="472" y="640" fill="var(--mute)" font-size="12">by provability, L0 to L2</text>
+        <rect x="656" y="580" width="180" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
+        <text x="668" y="602" fill="var(--ink)" font-weight="600">Hosting and bills</text>
+        <text x="668" y="622" fill="var(--mute)" font-size="12">rents GPUs and VMs,</text>
+        <text x="668" y="640" fill="var(--mute)" font-size="12">pays from the wallet</text>
         <!-- arrows -->
         <g stroke="var(--rule)" stroke-width="1.6" fill="none" marker-end="url(#ah2)">
           <path d="M190 155 H246"/><path d="M190 285 H246"/><path d="M190 415 H246"/>
           <path d="M420 140 C 440 140 440 230 456 230"/><path d="M420 270 H456"/><path d="M420 400 C 440 400 440 320 456 320"/>
           <path d="M640 230 C 660 230 660 140 676 140"/><path d="M640 270 H676"/><path d="M765 170 V236"/><path d="M765 300 V366"/>
           <path d="M850 400 H916"/><path d="M850 270 C 880 270 890 300 916 300"/>
+          <path d="M190 622 H260"/><path d="M836 600 C 880 600 890 530 916 530"/><path d="M836 640 C 880 640 890 650 916 650"/>
         </g>
         <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--rule)"/></marker></defs>
         <!-- outputs -->
@@ -366,6 +391,18 @@ td.k{color:var(--mute)}
         <text x="934" y="398" fill="var(--ink)" font-weight="600">Other chains</text>
         <text x="934" y="418" fill="var(--mute)" font-size="12">Solana, Ethereum</text>
         <text x="934" y="434" fill="var(--mute)" font-size="12">contract calls</text>
+        <rect x="920" y="490" width="160" height="80" rx="2" fill="var(--paper)" stroke="var(--rule)"/>
+        <text x="934" y="518" fill="var(--ink)" font-weight="600">AI APIs, provers</text>
+        <text x="934" y="538" fill="var(--mute)" font-size="12">hosted models,</text>
+        <text x="934" y="554" fill="var(--mute)" font-size="12">ZK proofs</text>
+        <rect x="920" y="610" width="160" height="80" rx="2" fill="var(--paper)" stroke="var(--rule)"/>
+        <text x="934" y="638" fill="var(--ink)" font-weight="600">Cloud hosts</text>
+        <text x="934" y="658" fill="var(--mute)" font-size="12">GPU, VM, storage,</text>
+        <text x="934" y="674" fill="var(--mute)" font-size="12">paid automatically</text>
+        <rect x="20" y="585" width="170" height="74" rx="2" fill="var(--paper)" stroke="var(--rule)"/>
+        <text x="34" y="612" fill="var(--ink)" font-weight="600">Payments in</text>
+        <text x="34" y="632" fill="var(--mute)" font-size="12">any asset, any chain,</text>
+        <text x="34" y="648" fill="var(--mute)" font-size="12">any wallet</text>
       </svg>
     </div>
     <div class="tbl"><table>
@@ -377,6 +414,7 @@ td.k{color:var(--mute)}
         <tr><td class="k">Stakes</td><td>The bond wallet holds the stake that a proven fault would cost.</td></tr>
         <tr><td class="k">Runs the state machine</td><td>The contract runtime runs the exact parts: escrow, payouts, and triggers declared by each contract.</td></tr>
         <tr><td class="k">Serves RPC</td><td>The outbox posts votes and rulings, and calls contracts on other chains when a ruling fires them.</td></tr>
+        <tr><td class="k">Pays its own way</td><td>The routing agent, an API router with a payment wallet, takes payment in any asset, converts it, pays for every AI call and the hosting from the wallet, and sends each contract only to AI that meets its provability requirement, up to a zero-knowledge proof.</td></tr>
       </tbody>
     </table></div>
   </div>
@@ -403,7 +441,7 @@ td.k{color:var(--mute)}
     <div class="grid4">
       <div class="col"><h3>A model</h3><p>Open weights on your own GPU, or a hosted model through an API. You commit to one version.</p></div>
       <div class="col"><h3>The harness</h3><p>One package: intake, loader, tools, guardrails, signer, contract runtime, outbox.</p></div>
-      <div class="col"><h3>A bond</h3><p>Stake that sizes how much value your votes can decide, and that you lose for a proven fault.</p></div>
+      <div class="col"><h3>A bond and a wallet</h3><p>Stake that sizes how much value your votes can decide, and a payment wallet the routing agent uses to pay for the AI and the hosting.</p></div>
       <div class="col"><h3>A specialty</h3><p>Optional. Harnesses can advertise domains, such as sports results or earnings calls, and earn seats there.</p></div>
     </div>
   </div>
@@ -503,6 +541,32 @@ td.k{color:var(--mute)}
   </div>
 </section>
 
+<section class="sec" aria-labelledby="scoin" id="no-coin">
+  <div class="gut"><span class="docket">§ 8a</span><span class="lbl">No coin</span></div>
+  <div class="body">
+    <h2 id="scoin">There is no token. There is no need for one.</h2>
+    <p class="lead">Swarm Chain is coin agnostic on purpose. It runs on whatever asset people want to put into it. A contract can be paid in USDC on Solana, ETH on Ethereum, or any asset on any chain with contracts, and any wallet works. The point is to build something useful regardless of the crypto.</p>
+    <div class="grid3">
+      <div class="col"><h3>Money stays where it is</h3><p>The requester funds escrow on their own chain. Swarm Chain records the ruling, and a quorum-signed trigger releases the escrow there, in the same asset.</p></div>
+      <div class="col"><h3>A payment router in every harness</h3><p>Each harness plugs in a payment router and sets what it accepts, for example USDC on Solana. It takes seats only on contracts it will be paid for.</p><span class="ex">"payments": { "router": "solana-usdc", "accept": [{ "chain": "solana", "asset": "USDC" }] }</span></div>
+      <div class="col"><h3>Paid in what was paid in</h3><p>Jurors, auditors, storage and sealers are paid their share in the contract's own asset. Bonds are posted the same way.</p></div>
+    </div>
+    <h3 style="margin-top:6px">What the money pays for</h3>
+    <div class="grid4">
+      <div class="col"><h3>Inference</h3><p>Each juror runs its AI model on the contract. Tokens at a provider, or GPU time on its own hardware.</p></div>
+      <div class="col"><h3>Running the harness</h3><p>The machine, the network, uptime, a pinned model, and the capital locked in the bond.</p></div>
+      <div class="col"><h3>Audits and storage</h3><p>Re-running sampled rulings with another lab's model, and keeping every prompt and piece of evidence fetchable by hash.</p></div>
+      <div class="col"><h3>Bookkeeping</h3><p>Sealing blocks, checking every signature and diff, and the source chain's fee to release the escrow.</p></div>
+    </div>
+    <div class="card" style="margin-top:4px">
+      <h3>The routing agent pays the bills</h3>
+      <p>Every harness carries a routing agent: an API router with its own payment wallet. Earnings land in the wallet in whatever the contract paid in. The router converts between assets, connects to AI APIs and cloud hosts, and pays for every model call, the GPU or VM, storage and bandwidth straight from the wallet, within caps the operator sets. It sends each contract only to AI that meets the contract's provability requirement: a hosted model where signatures are enough, an open model the harness can re-run, or a proving route with a zero-knowledge proof of inference when the contract demands one.</p>
+      <div class="flow"><span>earn 0.192 USDC per vote on Solana, into the payment wallet</span><span>keep the bond reserve, hold a cash reserve</span><span>convert on an approved venue when a bill is in another asset</span><span>route the model call to a provider that meets the contract's level, L0 to L2</span><span>pay the AI API and the cloud host from the wallet, log it against the ruling</span></div>
+      <p><span class="tag">partly built</span> Routing by provability and the wallet's spending rules run in the prototype; on-chain settlement, conversion and renting hosts are planned. <a href="coin-agnostic.html#the-routing-agent">How it works</a></p></div>
+    <p class="lead mut">In the prototype the router is a local ledger that records every payout without moving funds. The Solana and EVM routers are on the roadmap. The whole policy, including what we will never do, is in <a href="coin-agnostic.html">Coin Agnostic</a>.</p>
+  </div>
+</section>
+
 <section class="sec" aria-labelledby="s9">
   <div class="gut"><span class="docket">§ 9</span><span class="lbl">Where the words live</span></div>
   <div class="body">
@@ -538,7 +602,8 @@ td.k{color:var(--mute)}
       <thead><tr><th>Lane</th><th>Latency per ruling</th><th>Model cost per ruling</th><th>Basis</th><th>Good for</th></tr></thead>
       <tbody>
         <tr><td>Fast screen (System 1 model)</td><td class="v">70 to 500 ms</td><td class="v">about $0.0004</td><td><span class="tag vr">vendor-reported</span> TypeSafe Jev, early access</td><td>Easy cases and the safe default; escalating the rest</td></tr>
-        <tr><td>Jury of 5 budget models</td><td class="v">20 to 60 s</td><td class="v">$0.002 to $0.01</td><td><span class="tag m">measured</span> prototype runs</td><td>Market resolution, fact checks, forecasts</td></tr>
+        <tr><td>Jury of 5 hosted models, live</td><td class="v">5.9 to 30.1 s</td><td class="v">about $0.003</td><td><span class="tag m">measured</span> Nov 6, 2026: five rulings through OpenRouter, $0.0163 in total</td><td>Market resolution, fact checks, forecasts, triggers</td></tr>
+        <tr><td>Jury of 5 budget models</td><td class="v">20 to 60 s</td><td class="v">$0.002 to $0.01</td><td><span class="tag m">measured</span> earlier prototype runs</td><td>Same</td></tr>
         <tr><td>Jury of 5, modeled</td><td class="v">set by the slowest model</td><td class="v">about $0.006</td><td><span class="tag mo">modeled</span> 1,500 tokens in, 300 out, Oct 2026 prices</td><td>Same</td></tr>
         <tr><td>Proven jury, proof per vote</td><td class="v">about 16 s proving per vote</td><td class="v">about $0.14</td><td><span class="tag mo">modeled</span> 110 tokens/s per H100 at $6.16 an hour; one open model, 1,024-token context</td><td>High-value rulings, once more models can be proven</td></tr>
       </tbody>
@@ -605,15 +670,25 @@ td.k{color:var(--mute)}
   <div class="gut"><span class="docket">§ 14</span><span class="lbl">Roadmap</span></div>
   <div class="body">
     <h2 id="sr">From a local prototype to an open network</h2>
-    <p class="lead">The harness is open source at <a href="https://github.com/Verafyai/swarmHarness">Verafyai/swarmHarness</a>, built on DeepSeek Harness. Each milestone ends with a check anyone can run.</p>
+    <p class="lead">The harness is open source at <a href="https://github.com/Verafyai/verafyHarness">Verafyai/verafyHarness</a>, built on DeepSeek Harness. Each milestone ends with a check anyone can run.</p>
     <div class="road">
-      <div class="ms"><span class="st done">1 · done</span><div><h3>Local prototype</h3><p>The contract format, pinned context, commit-reveal votes, close-enough agreement, the contract runtime, jury draws across labs and Proof of Judgment blocks. Five example contracts seal five blocks; 14 tests pass.</p></div></div>
-      <div class="ms"><span class="st next">2 · next</span><div><h3>Juror mode inside DeepSeek Harness</h3><p>Five DSH processes, each routed to a different lab's model, rule on one contract and the block seals from their reveals.</p></div></div>
-      <div class="ms"><span class="st later">3</span><div><h3>Live juries</h3><p>100 live rulings across market resolution, fact checking, forecasting and triggers, with measured cost and latency, audits, challenges and a fast lane.</p></div></div>
+      <div class="ms"><span class="st done">1 · done</span><div><h3>Local prototype</h3><p>The contract format, pinned context, commit-reveal votes, close-enough agreement, the contract runtime, jury draws across labs, payment routers and Proof of Judgment blocks. Five example contracts seal five blocks.</p></div></div>
+      <div class="ms"><span class="st done">2 · done</span><div><h3>Juror mode inside DeepSeek Harness</h3><p>Five DeepSeek Harness processes on five labs' models (Claude Haiku 4.5, GPT-5 mini, Gemini 2.5 Flash, Llama 4 Maverick, Qwen3 235B) all ruled NO at 100% agreement against an 80% bar, and the block sealed from their reveals. Every non-swarm tool was denied.</p></div></div>
+      <div class="ms"><span class="st next">3 · next</span><div><h3>Live juries</h3><p>100 live rulings across market resolution, fact checking, forecasting and triggers, with measured cost and latency, audits, challenges and a fast lane.</p></div></div>
       <div class="ms"><span class="st later">4</span><div><h3>A network of harnesses</h3><p>Ten independently run harnesses on five or more labs' models, with gossip, storage, bonds and slashing, sealing blocks on a test network for a week.</p></div></div>
       <div class="ms"><span class="st later">5</span><div><h3>Solana integration</h3><p>A devnet prediction market resolved by a harness jury and settled by a quorum-signed call, in line with the draft SIMDs.</p></div></div>
       <div class="ms"><span class="st later">6</span><div><h3>Proofs of inference</h3><p>A ruling sealed with a verified proof for every counted vote, once proofs are practical for more models.</p></div></div>
     </div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="swhy" id="why">
+  <div class="gut"><span class="docket">§ 14a</span><span class="lbl">Why</span></div>
+  <div class="body">
+    <h2 id="swhy">Built to stand on its own</h2>
+    <p class="lead">Swarm Chain is being built without venture capital and without a token, so the idea has to stand on its own. If it works, other people will copy it, and they are welcome to. Everything is MIT licensed. The goal is a prototype that is useful: a way for any contract, on any chain, to get a decision it can't make in code.</p>
+    <p class="lead">There is no foundation. There is no UAE entity. There is no BVI company hidden somewhere. It is just a project. Come test it. We are having fun again.</p>
+    <p class="lead"><a href="testnet.html">Try the local devnet</a> &nbsp; <a href="run.html">Run a harness</a> &nbsp; <a href="https://github.com/Verafyai/verafyHarness">Read the code</a></p>
   </div>
 </section>
 
@@ -622,7 +697,7 @@ td.k{color:var(--mute)}
   <div class="body">
     <h2 id="s14">The near-term version runs on Solana</h2>
     <p class="lead">Three draft SIMDs propose inference programs, evaluator attestations, and rulings with disputes and challenges, as ordinary programs on today's Solana. A harness is a natural way to run an evaluator there too. Swarm Chain is where the idea goes if you take it all the way.</p>
-    <p class="lead"><a href="https://github.com/Verafyai/swarmHarness">Run the harness</a> &nbsp; <a href="https://asc.verafy.ai">Read the SIMDs</a> &nbsp; <a href="https://blog.verafy.ai/articles/20261105-simd-verifiable-inference">Bringing Inference Programs To Solana</a> &nbsp; <a href="https://github.com/solana-foundation/solana-improvement-documents/discussions/724">Discussion #724</a></p>
+    <p class="lead"><a href="https://github.com/Verafyai/verafyHarness">Run the harness</a> &nbsp; <a href="https://asc.verafy.ai">Read the SIMDs</a> &nbsp; <a href="https://blog.verafy.ai/articles/20261105-simd-verifiable-inference">Bringing Inference Programs To Solana</a> &nbsp; <a href="https://github.com/solana-foundation/solana-improvement-documents/discussions/724">Discussion #724</a></p>
   </div>
 </section>
 </main>

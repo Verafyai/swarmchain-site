@@ -734,7 +734,7 @@ profit = sum of shares  +  audit fees and caught bonds  -  model cost  -  machin
 <p>On testnet, everything is play money.</p>
 <h2 id="16-operating-a-harness">16. Operating a harness</h2>
 <ul>
-<li><strong>Keys.</strong> The identity key signs every commitment and reveal. Keep it on the harness machine, readable only by the harness user. Model API keys live in environment variables.</li>
+<li><strong>Keys.</strong> The identity key signs every commitment and reveal. Keep it on the harness machine, readable only by the harness user. API keys and wallet keys go in the <strong>keyblock</strong>, encrypted under a passphrase you supply through <code>SWARM_KEYBLOCK_PASSPHRASE</code>; the rest of the harness only ever holds short-lived scoped keys. See <a href="coin-agnostic.html#the-routing-agent">The routing agent</a>.</li>
 <li><strong>Pin your runtime.</strong> For an open-weights harness, pin the vLLM image by digest and the weights by hash. Changing either without re-registering will fail audits.</li>
 <li><strong>Temperature 0.</strong> Juror calls use temperature 0 so auditors can re-run them.</li>
 <li><strong>Uptime.</strong> A harness that commits and then fails to reveal is faulted. Take seats only while the model endpoint is healthy; <code>doctor --live</code> is the check.</li>

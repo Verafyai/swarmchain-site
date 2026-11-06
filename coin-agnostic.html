@@ -41,6 +41,7 @@ article blockquote p{margin:0}
 code{font-family:var(--mono);font-size:.86em;background:var(--code);padding:1px 5px;border-radius:2px}
 pre{background:var(--code);border:1px solid var(--rule);border-radius:3px;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.5}
 pre code{background:none;padding:0;font-size:inherit}
+img{max-width:100%;height:auto}
 .tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--sheet);margin:16px 0}
 table{border-collapse:collapse;width:100%;min-width:560px;font-size:15.5px}
 th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
@@ -213,34 +214,49 @@ tr:last-child td{border-bottom:0}
 </table></div>
 <p>For scale, the <strong>measured</strong> model cost of a five-model ruling on Nov 6, 2026 was about <strong>$0.003</strong>, or about $0.0007 per vote (<a href="https://github.com/Verafyai/verafyHarness/blob/main/results/live-2026-11-06.md">results</a>). So in this example inference is a small part of what a juror's share covers; the rest pays for the machine, the bond and the operator's time. Real escrow amounts will be set by requesters and by competition between harnesses, and will likely be much lower than this example.</p>
 <h2 id="the-routing-agent">The routing agent</h2>
-<p>Every harness carries a <strong>routing agent</strong>: an API router with its own <strong>payment wallet</strong>. It is the part of the harness that deals with money and suppliers, so the AI can stay focused on judging. Earnings land in the wallet, and the router pays for the AI calls, the hosting and everything else the harness uses out of that wallet, automatically. It does four jobs.</p>
+<p>Every harness carries a <strong>routing agent</strong>: the part of the harness that deals with keys, money and outside services, so the AI can stay focused on judging. It is built from four blocks.</p>
+<p><img alt="Block diagram: the routing agent inside the harness, with its keyblock, banker, API router and payment wallet, taking payments in any asset and paying AI APIs, provers and cloud hosts" src="assets/harness-diagram.png" /></p>
 <div class="tbl"><table>
 <thead>
 <tr>
-<th>Job</th>
-<th>What the routing agent does</th>
+<th>Block</th>
+<th>What it does</th>
+<th>In the code</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Payments in</strong></td>
-<td>Accepts payment in any asset on any chain the operator allows, and converts between them: USDC, SOL, ETH or any token, swapped on venues the operator approves. This is the payment router.</td>
+<td><strong>Keyblock</strong></td>
+<td>The vault. Holds every API key and wallet key encrypted at rest, and never hands a raw secret to the rest of the harness. It issues <strong>scoped keys</strong> instead: short-lived, signed grants such as "call the OpenRouter API" or "pay the GPU host", with an expiry and a use limit. The API router and the banker present a scoped key each time they need a secret used. Revoke one key, or lock the keyblock, and every use stops.</td>
+<td><code>Keyblock</code> in <code>keyblock.js</code></td>
 </tr>
 <tr>
-<td><strong>Inference routing</strong></td>
-<td>Connects to AI APIs and to models the operator hosts, and sends each contract to a route that meets the contract's provability requirement. A contract that demands a zero-knowledge proof of inference only goes to a route that can produce one.</td>
+<td><strong>Banker</strong></td>
+<td>The exchange. Accepts any digital token the operator allows, swaps one token for another at the best quote across approved venues within a slippage limit, never sells into the bond reserve, and funds payments in whatever token the payee takes.</td>
+<td><code>Banker</code> in <code>banker.js</code></td>
 </tr>
 <tr>
-<td><strong>Hosting</strong></td>
-<td>Connects to cloud backends to rent and pay for what the harness runs on: GPU servers for open-weights or proving routes, a small VM for an API harness, storage and bandwidth.</td>
+<td><strong>API router</strong></td>
+<td>One door to every outside API: AI model APIs, external API routers such as OpenRouter, proving services, cloud hosting backends and payment endpoints. It attaches the right API key from the keyblock, meters each call, and pays each API through the banker, per call or accrued and settled. It sends each contract only to AI that meets the contract's provability requirement.</td>
+<td><code>ApiRouter</code> in <code>apirouter.js</code>, <code>routeInference()</code> in <code>routing.js</code></td>
 </tr>
 <tr>
-<td><strong>Bills</strong></td>
-<td>Pays the harness's own running costs from what it earns: model API credits, GPU or cloud hosting, storage. It keeps the bond topped up first, holds a reserve, and uses an off-ramp where a supplier only takes cards or bank transfers.</td>
+<td><strong>Payment wallet</strong></td>
+<td>Where earnings land and bills are paid from. Allowlisted payees, monthly caps, an approval threshold, the bond reserve, and a log of every receipt, swap and payment against the ruling that funded it.</td>
+<td><code>PaymentWallet</code> in <code>routing.js</code></td>
 </tr>
 </tbody>
 </table></div>
-<p>The effect is a validator that runs itself: it takes payment in whatever the requester holds, buys exactly the inference the contract asks for, pays for the machine it runs on, and keeps its bond in place, with no native coin in the middle.</p>
+<p>How they work together on one juror vote:</p>
+<ol>
+<li>The juror asks the API router for a model call, presenting a scoped key that allows <code>call:openrouter</code> and nothing else.</li>
+<li>The API router checks that the route meets the contract's assurance level, asks the keyblock to lend the OpenRouter key for this one call, and sends the request. The juror never sees the key.</li>
+<li>The response's token usage is priced from the API's price card.</li>
+<li>The banker pays OpenRouter in USDC from the payment wallet. If the wallet holds SOL instead, the banker swaps just enough SOL to USDC first, on an approved venue, leaving the bond reserve alone.</li>
+<li>The wallet logs the swap and the payment against the ruling.</li>
+</ol>
+<p>The same path rents and pays a GPU host (<code>call:gpucloud</code>, accrued and settled monthly), pays a proving service for an L2 contract, or pays any other API the operator plugs in.</p>
+<p>The effect is a validator that runs itself: it takes payment in whatever the requester holds, buys exactly the inference the contract asks for, pays for the machine it runs on, and keeps its bond in place, with no native coin in the middle and no secret in the open.</p>
 <h3 id="the-payment-wallet">The payment wallet</h3>
 <p>The wallet is how the harness pays its own way.</p>
 <ol>
@@ -281,8 +297,19 @@ tr:last-child td{border-bottom:0}
 </table></div>
 <p>A hosted API can't prove which model it served, so it tops out at L1. When a contract asks for L2, the routing agent has to rent a proving-capable GPU and run an open model itself, or decline. That is available in the prototype today as <code>routeInference()</code> in <code>packages/core/src/routing.js</code>, which picks the cheapest qualifying route and refuses when none qualifies.</p>
 <h3 id="configuration">Configuration</h3>
-<p>The operator stays in charge through limits in the harness config. The routing section is <strong>planned</strong>; <code>payments</code> already works with the <code>ledger</code> router.</p>
+<p>The operator stays in charge through limits in the harness config. The keyblock, banker, API router and wallet run in the core today with test venues and test APIs; reading this section from the config file, real exchange venues and signing on chain are <strong>planned</strong>.</p>
 <pre><code class="language-json">{
+  &quot;keyblock&quot;: { &quot;file&quot;: &quot;~/.swarm/keyblock.json&quot;, &quot;passphraseEnv&quot;: &quot;SWARM_KEYBLOCK_PASSPHRASE&quot; },
+  &quot;banker&quot;: {
+    &quot;accept&quot;: [{ &quot;chain&quot;: &quot;*&quot;, &quot;asset&quot;: &quot;*&quot; }],
+    &quot;venues&quot;: [&quot;&lt;approved Solana DEX aggregator&gt;&quot;, &quot;&lt;approved EVM DEX aggregator&gt;&quot;],
+    &quot;maxSlippage&quot;: 0.005,
+    &quot;prefer&quot;: [&quot;USDC&quot;, &quot;SOL&quot;, &quot;ETH&quot;]
+  },
+  &quot;apis&quot;: [
+    { &quot;id&quot;: &quot;openrouter&quot;, &quot;kind&quot;: &quot;inference&quot;, &quot;baseURL&quot;: &quot;https://openrouter.ai/api/v1&quot;, &quot;secret&quot;: &quot;openrouter&quot;, &quot;payee&quot;: &quot;openrouter&quot;, &quot;billing&quot;: &quot;per-call&quot; },
+    { &quot;id&quot;: &quot;gpucloud&quot;, &quot;kind&quot;: &quot;hosting&quot;, &quot;baseURL&quot;: &quot;&lt;cloud provider API&gt;&quot;, &quot;secret&quot;: &quot;gpucloud&quot;, &quot;payee&quot;: &quot;gpucloud&quot;, &quot;billing&quot;: &quot;accrue&quot; }
+  ],
   &quot;routing&quot;: {
     &quot;inference&quot;: [
       { &quot;id&quot;: &quot;hosted-haiku&quot;, &quot;kind&quot;: &quot;hosted&quot;, &quot;provider&quot;: &quot;openrouter&quot;, &quot;model&quot;: &quot;anthropic/claude-haiku-4.5&quot;, &quot;usdPerVote&quot;: 0.003 },
@@ -335,7 +362,7 @@ tr:last-child td{border-bottom:0}
 </tr>
 </tbody>
 </table></div>
-<p><strong>Status.</strong> Inference routing by assurance level, and the payment wallet's spending rules, work in the core today. Accepting and converting payments on chain, renting hosts and paying bills are <strong>planned</strong>, after the on-chain payment routers; see the <a href="https://github.com/Verafyai/verafyHarness/blob/main/ROADMAP.md">roadmap</a>.</p>
+<p><strong>Status.</strong> The keyblock (encryption, scoped keys, revocation), the banker (accept lists, best-quote swaps, slippage and bond-reserve limits), the API router (keyed calls, metering, per-call and accrued billing), inference routing by assurance level and the payment wallet's rules all work in the core today, tested with fixed-rate venues and test APIs. Accepting and converting payments on chain, renting hosts and paying bills are <strong>planned</strong>, after the on-chain payment routers; see the <a href="https://github.com/Verafyai/verafyHarness/blob/main/ROADMAP.md">roadmap</a>.</p>
 <h2 id="how-money-moves">How money moves</h2>
 <p>Money never moves to Swarm Chain. It stays on the chain where the requester holds it.</p>
 <ol>
@@ -345,7 +372,7 @@ tr:last-child td{border-bottom:0}
 </ol>
 <p>Swarm Chain itself only records decisions. It has no balance of its own to protect. What a harness does with its share afterwards, including converting it to pay its own bills, is up to its <a href="#the-routing-agent">routing agent</a>.</p>
 <h2 id="the-payment-router">The payment router</h2>
-<p>The payment router is the payments-in part of the <a href="#the-routing-agent">routing agent</a>. Every harness plugs one in. The router decides which payments the harness accepts and where its share is sent. Set it in the harness config:</p>
+<p>The payment router settles a harness's share on the chain where the contract was paid; the banker then holds or converts it. Every harness plugs one in. The router decides which payments the harness accepts and where its share is sent. Set it in the harness config:</p>
 <pre><code class="language-json">{
   &quot;payments&quot;: {
     &quot;router&quot;: &quot;solana-usdc&quot;,

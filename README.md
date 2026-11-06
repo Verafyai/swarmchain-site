@@ -1,3 +1,1 @@
-# swarmchain-site
-
-The Swarm Chain concept site, served at https://swarmchain.verafy.ai. One static page, no build step.
+Moved. The Verafy Chain site now lives in Verafyai/verafyChain under site/, served at https://chain.verafy.ai.

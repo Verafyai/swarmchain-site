@@ -309,7 +309,7 @@ td.k{color:var(--mute)}
   <div class="body">
     <h2 id="s2">A validator is an AI model in a harness</h2>
     <p class="lead">On today's chains a validator is a machine that re-runs code and votes on blocks. On Swarm Chain a validator is an AI model wrapped in a harness. The model brings judgment. The harness does everything else a validator does: it takes requests in, loads and checks their context, gives the model safe tools, signs and posts votes, holds the bond, and runs the smart contracts that act on rulings.</p>
-    <div class="figure" role="img" aria-label="Block diagram of a harnessed validator. On the left, inputs: requests from Swarm Chain or any chain, and pinned context from the availability layer. Inside the harness: an intake queue, a context loader that verifies hashes, a tools sandbox, the pinned AI model at the center, guardrails, a signer for commit and reveal, a contract runtime for escrow, payouts and triggers, a bond wallet, a track record, attestation of the model and hardware, and a routing agent: an API router with a payment wallet, an inference router that picks AI by provability from L0 to L2, and hosting and bills. Payments in any asset come in on the left. On the right, outputs: votes and rulings posted to Swarm Chain, contract calls to other chains, AI APIs and provers, and cloud hosts paid automatically.">
+    <div class="figure" role="img" aria-label="Block diagram of a harnessed validator. On the left, inputs: requests from Swarm Chain or any chain, and pinned context from the availability layer. Inside the harness: an intake queue, a context loader that verifies hashes, a tools sandbox, the pinned AI model at the center, guardrails, a signer for commit and reveal, a contract runtime for escrow, payouts and triggers, a bond wallet, a track record, attestation of the model and hardware, and a routing agent of four blocks: a keyblock that holds API and wallet keys encrypted and issues scoped keys, a banker that accepts any token and swaps between tokens, an API router that plugs into and pays AI APIs, routers, provers and hosts and picks AI by provability from L0 to L2, and a payment wallet. Payments in any asset come in on the left. On the right, outputs: votes and rulings posted to Swarm Chain, contract calls to other chains, AI APIs and provers, and cloud hosts paid automatically.">
       <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, ui-monospace, monospace" font-size="13">
         <!-- external inputs -->
         <text x="20" y="34" fill="var(--mute)" font-size="12" letter-spacing="1.2">IN</text>
@@ -359,26 +359,30 @@ td.k{color:var(--mute)}
         <!-- routing agent -->
         <rect x="250" y="540" width="600" height="140" rx="2" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
         <text x="264" y="564" fill="var(--ink)" font-weight="600" font-size="14">Routing agent</text>
-        <text x="390" y="564" fill="var(--mute)" font-size="12">API router and payment wallet: serves every model call</text>
-        <rect x="264" y="580" width="180" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
-        <text x="276" y="602" fill="var(--ink)" font-weight="600">Payment wallet</text>
-        <text x="276" y="622" fill="var(--mute)" font-size="12">any asset in, converts</text>
-        <text x="276" y="640" fill="var(--mute)" font-size="12">bond reserve, caps</text>
-        <rect x="460" y="580" width="180" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
-        <text x="472" y="602" fill="var(--ink)" font-weight="600">Inference router</text>
-        <text x="472" y="622" fill="var(--mute)" font-size="12">AI APIs and own GPUs</text>
-        <text x="472" y="640" fill="var(--mute)" font-size="12">by provability, L0 to L2</text>
-        <rect x="656" y="580" width="180" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
-        <text x="668" y="602" fill="var(--ink)" font-weight="600">Hosting and bills</text>
-        <text x="668" y="622" fill="var(--mute)" font-size="12">rents GPUs and VMs,</text>
-        <text x="668" y="640" fill="var(--mute)" font-size="12">pays from the wallet</text>
+        <text x="390" y="564" fill="var(--mute)" font-size="12">keys, money and outside APIs</text>
+        <rect x="264" y="580" width="134" height="84" rx="2" fill="var(--sheet)" stroke="var(--accent)"/>
+        <text x="274" y="602" fill="var(--ink)" font-weight="600">Keyblock</text>
+        <text x="274" y="622" fill="var(--mute)" font-size="11">encrypted keys,</text>
+        <text x="274" y="640" fill="var(--mute)" font-size="11">issues scoped keys</text>
+        <rect x="410" y="580" width="134" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
+        <text x="420" y="602" fill="var(--ink)" font-weight="600">Banker</text>
+        <text x="420" y="622" fill="var(--mute)" font-size="11">any token in,</text>
+        <text x="420" y="640" fill="var(--mute)" font-size="11">swaps, funds pay</text>
+        <rect x="556" y="580" width="134" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
+        <text x="566" y="602" fill="var(--ink)" font-weight="600">API router</text>
+        <text x="566" y="622" fill="var(--mute)" font-size="11">AI, routers, hosts,</text>
+        <text x="566" y="640" fill="var(--mute)" font-size="11">by provability</text>
+        <rect x="702" y="580" width="134" height="84" rx="2" fill="var(--sheet)" stroke="var(--rule)"/>
+        <text x="712" y="602" fill="var(--ink)" font-weight="600">Payment wallet</text>
+        <text x="712" y="622" fill="var(--mute)" font-size="11">caps, bond reserve,</text>
+        <text x="712" y="640" fill="var(--mute)" font-size="11">logs every move</text>
         <!-- arrows -->
         <g stroke="var(--rule)" stroke-width="1.6" fill="none" marker-end="url(#ah2)">
           <path d="M190 155 H246"/><path d="M190 285 H246"/><path d="M190 415 H246"/>
           <path d="M420 140 C 440 140 440 230 456 230"/><path d="M420 270 H456"/><path d="M420 400 C 440 400 440 320 456 320"/>
           <path d="M640 230 C 660 230 660 140 676 140"/><path d="M640 270 H676"/><path d="M765 170 V236"/><path d="M765 300 V366"/>
           <path d="M850 400 H916"/><path d="M850 270 C 880 270 890 300 916 300"/>
-          <path d="M190 622 H260"/><path d="M836 600 C 880 600 890 530 916 530"/><path d="M836 640 C 880 640 890 650 916 650"/>
+          <path d="M190 640 C 240 692 400 692 470 666"/><path d="M836 600 C 880 600 890 530 916 530"/><path d="M836 640 C 880 640 890 650 916 650"/>
         </g>
         <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--rule)"/></marker></defs>
         <!-- outputs -->
@@ -414,7 +418,8 @@ td.k{color:var(--mute)}
         <tr><td class="k">Stakes</td><td>The bond wallet holds the stake that a proven fault would cost.</td></tr>
         <tr><td class="k">Runs the state machine</td><td>The contract runtime runs the exact parts: escrow, payouts, and triggers declared by each contract.</td></tr>
         <tr><td class="k">Serves RPC</td><td>The outbox posts votes and rulings, and calls contracts on other chains when a ruling fires them.</td></tr>
-        <tr><td class="k">Pays its own way</td><td>The routing agent, an API router with a payment wallet, takes payment in any asset, converts it, pays for every AI call and the hosting from the wallet, and sends each contract only to AI that meets its provability requirement, up to a zero-knowledge proof.</td></tr>
+        <tr><td class="k">Holds the keys</td><td>The keyblock keeps every API key and wallet key encrypted and issues short-lived scoped keys, so nothing else in the harness holds a raw secret.</td></tr>
+        <tr><td class="k">Pays its own way</td><td>The banker accepts any token and swaps between tokens; the API router plugs into AI APIs, external routers, provers and cloud hosts, pays each in the token it takes from the payment wallet, and sends each contract only to AI that meets its provability requirement, up to a zero-knowledge proof.</td></tr>
       </tbody>
     </table></div>
   </div>
@@ -560,9 +565,9 @@ td.k{color:var(--mute)}
     </div>
     <div class="card" style="margin-top:4px">
       <h3>The routing agent pays the bills</h3>
-      <p>Every harness carries a routing agent: an API router with its own payment wallet. Earnings land in the wallet in whatever the contract paid in. The router converts between assets, connects to AI APIs and cloud hosts, and pays for every model call, the GPU or VM, storage and bandwidth straight from the wallet, within caps the operator sets. It sends each contract only to AI that meets the contract's provability requirement: a hosted model where signatures are enough, an open model the harness can re-run, or a proving route with a zero-knowledge proof of inference when the contract demands one.</p>
-      <div class="flow"><span>earn 0.192 USDC per vote on Solana, into the payment wallet</span><span>keep the bond reserve, hold a cash reserve</span><span>convert on an approved venue when a bill is in another asset</span><span>route the model call to a provider that meets the contract's level, L0 to L2</span><span>pay the AI API and the cloud host from the wallet, log it against the ruling</span></div>
-      <p><span class="tag">partly built</span> Routing by provability and the wallet's spending rules run in the prototype; on-chain settlement, conversion and renting hosts are planned. <a href="coin-agnostic.html#the-routing-agent">How it works</a></p></div>
+      <p>Every harness carries a routing agent built from four blocks. The <b>keyblock</b> holds every API key and wallet key encrypted and issues short-lived scoped keys, so nothing else in the harness touches a raw secret. The <b>banker</b> accepts any digital token, swaps one for another at the best quote on approved venues, and funds payments in whatever token a supplier takes. The <b>API router</b> plugs into AI APIs, external API routers, proving services and cloud hosts, and pays each one. The <b>payment wallet</b> is where earnings land and bills are paid from, within the operator's caps and never touching the bond.</p>
+      <div class="flow"><span>a juror asks the API router for a model call with a scoped key: call:openrouter</span><span>the router checks the route meets the contract's level, L0 to L2</span><span>the keyblock lends the API key for that one call; the juror never sees it</span><span>the banker swaps just enough SOL to USDC on an approved venue</span><span>the wallet pays the API and logs it against the ruling</span></div>
+      <p><span class="tag">built, with test venues</span> All four blocks run in the prototype with fixed-rate test venues and test APIs; real exchange venues and on-chain signing are planned. <a href="coin-agnostic.html#the-routing-agent">How it works</a></p></div>
     <p class="lead mut">In the prototype the router is a local ledger that records every payout without moving funds. The Solana and EVM routers are on the roadmap. The whole policy, including what we will never do, is in <a href="coin-agnostic.html">Coin Agnostic</a>.</p>
   </div>
 </section>
